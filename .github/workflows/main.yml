@@ -2,18 +2,18 @@ name: RSS Dashboard Automation
 
 on:
   schedule:
-    - cron: '0 0 * * *' # 매일 자정(UTC 기준)에 자동 실행
-  workflow_dispatch: # 버튼을 눌러 수동으로 실행할 수 있는 기능
+    - cron: '0 0 * * *' # 매일 자정에 자동 실행
+  workflow_dispatch: # 수동 실행 버튼
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - name: 저장소 코드 가져오기
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4  # 💡 v3에서 v4로 업데이트
 
     - name: 파이썬 환경 설정
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5  # 💡 v4에서 v5로 업데이트
       with:
         python-version: '3.x'
 
