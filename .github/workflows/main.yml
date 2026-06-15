@@ -1,0 +1,32 @@
+name: RSS Dashboard Automation
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # 매일 자정(UTC 기준)에 자동 실행
+  workflow_dispatch: # 버튼을 눌러 수동으로 실행할 수 있는 기능
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 저장소 코드 가져오기
+      uses: actions/checkout@v3
+
+    - name: 파이썬 환경 설정
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: 필요한 패키지 설치 (feedparser)
+      run: pip install feedparser
+
+    - name: 파이썬 스크립트 실행 (웹페이지 생성)
+      run: python build.py
+
+    - name: 생성된 index.html을 GitHub에 자동 저장(Commit)
+      run: |
+        git config --global user.email "actions@github.com"
+        git config --global user.name "GitHub Actions"
+        git add index.html
+        git diff --quiet && git diff --staged --quiet || git commit -m "대시보드 자동 업데이트"
+        git push
